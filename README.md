@@ -83,3 +83,28 @@ Instead of retraining the ML model, the 17 technical skill domains required by t
 - **AI / ML** -> CSE 440 & CSE 445
 
 This allows students to intuitively rate their skills based on the exact courses they have completed!
+
+---
+
+## 📁 Folder Structure
+
+Here is a quick overview of the project's directory structure and the purpose of each folder/file:
+
+```text
+AI-Career-Guidance-System-main/
+├── db.sqlite3            # SQLite database file for the Django project
+├── manage.py             # Django command-line utility for administrative tasks
+├── requirements.txt      # List of Python dependencies required for the project
+├── start.bat / stop.bat  # Batch scripts to easily start and stop the local server
+├── debug_model.py        # Script used for debugging the machine learning model
+├── test_prediction.py    # Script to test the model's prediction functionality
+├── assets/               # Contains static assets like images (e.g., background images)
+├── Dataset/              # Contains the dataset(s) used for training the model (e.g., dataset9000.csv)
+├── finalapp/             # The main Django application folder
+│   ├── templates/        # HTML templates for the web interface (homepage, results, etc.)
+│   ├── lr_clf.pkl        # The saved/pickled Logistic Regression machine learning model
+│   └── ...               # Django app specific files (views.py, models.py, urls.py, etc.)
+├── new_project2/         # The core Django project configuration folder (settings.py, urls.py)
+├── Notebooks/            # Jupyter notebooks used for data exploration, model training, and analysis
+└── Versions/             # Older versions or alternate implementations of the app (e.g., Streamlit versions)
+```
