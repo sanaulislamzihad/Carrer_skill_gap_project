@@ -64,14 +64,54 @@ Although Logistic Regression is often used for binary classification (Yes/No), t
 
 ---
 
-## 🛠️ Required Setup
+## 🛠️ Step-by-Step Manual Setup (Recommended)
 
-If you are running this for the very first time on a new machine, make sure you install the required dependencies:
+If you are running this for the very first time on a new machine, follow these steps to set up the project manually without using the batch files.
 
+### 1. Prerequisites
+Ensure you have **Python 3.8+** installed on your system. You can check your Python version by running:
+```bash
+python --version
+```
+
+### 2. Create a Virtual Environment (Optional but recommended)
+It is best practice to create a virtual environment to keep project dependencies isolated. Run this in your terminal:
+```bash
+python -m venv venv
+```
+Activate the virtual environment:
+- **Windows:**
+  ```cmd
+  venv\Scripts\activate
+  ```
+- **Mac/Linux:**
+  ```bash
+  source venv/bin/activate
+  ```
+
+### 3. Install Required Packages
+Install all the necessary dependencies (such as Django, Pandas, Scikit-learn, Numpy) from the requirements file using `pip`:
 ```bash
 pip install -r requirements.txt
 ```
-*(Common dependencies include: Django, pandas, scikit-learn, numpy)*
+
+### 4. Apply Database Migrations (Optional)
+Before running the application, make sure the local SQLite database is fully set up:
+```bash
+python manage.py migrate
+```
+
+### 5. Run the Local Server
+Start the Django development server manually:
+```bash
+python manage.py runserver
+```
+
+### 6. Access the Application
+Open your web browser and navigate to:
+```text
+http://127.0.0.1:8000/
+```
 
 ---
 
