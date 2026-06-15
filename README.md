@@ -48,6 +48,22 @@ This project integrates a **Machine Learning Model** with a **Django Web Framewo
 
 ---
 
+## 🧠 Model Training & Algorithm Details
+
+The predictive engine of this system is built using **Machine Learning**, specifically the **Logistic Regression** algorithm. 
+
+**Why Logistic Regression?**
+Although Logistic Regression is often used for binary classification (Yes/No), this project utilizes its **Multinomial (Multiclass)** capability to categorize students into one of 16 distinct career paths. It calculates the probability of a student belonging to each career category based on their input features and selects the careers with the highest probabilities.
+
+**Training Process:**
+1. **Dataset:** The model was trained on a dataset (`dataset9000.csv`) containing records of students' technical ratings (1-7 scale) and their mapped OCEAN personality traits.
+2. **Feature Engineering:** The raw personality questionnaire answers are mathematically combined to generate final scores for Openness, Conscientiousness, Extraversion, Agreeableness, and Emotional Range. These, along with 17 technical skill ratings, serve as the input features (X).
+3. **Target Variable:** The target variable (y) is the recommended career role (encoded from 0 to 15).
+4. **Training:** The dataset was split into training and testing sets. The Logistic Regression model learned the correlations between specific skill/personality combinations and successful career outcomes. 
+5. **Serialization:** After achieving satisfactory accuracy, the trained model was exported as a serialized pickle file (`lr_clf.pkl`), allowing the Django application to make real-time predictions instantly without needing to retrain the model.
+
+---
+
 ## 🛠️ Required Setup
 
 If you are running this for the very first time on a new machine, make sure you install the required dependencies:
