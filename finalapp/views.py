@@ -23,6 +23,9 @@ import pickle
 
 
 #model code form
+def landing(request):
+    return render(request, 'landing.html')
+
 def index(request):
     return render(request,'index.html')
 
@@ -185,9 +188,59 @@ def predict(request):
         for i in range(2,-1,-1):
             l.append([roles[top[i]],int(top[i]*100)])
         
+        # --- Skill Gap Analysis Logic ---
+        # Defining ideal skill targets (on a scale of 1-7) for each role
+        role_skill_requirements = {
+            'AI ML Specialist': {'AI ML': 7, 'Data Science': 6, 'Programming Skills': 6, 'Software Engineering': 5, 'Database Fundamentals': 4},
+            'API Specialist': {'Software Development': 6, 'Programming Skills': 6, 'Networking': 5, 'Distributed Computing Systems': 4, 'Database Fundamentals': 4},
+            'Application Support Engineer': {'Troubleshooting skills': 7, 'Software Development': 5, 'Database Fundamentals': 5, 'Networking': 5, 'Communication skills': 4},
+            'Business Analyst': {'Business Analysis': 7, 'Communication skills': 6, 'Project Management': 5, 'Software Development': 4, 'Data Science': 4},
+            'Customer Service Executive': {'Communication skills': 7, 'Technical Communication': 6, 'Troubleshooting skills': 5, 'Business Analysis': 4},
+            'Cyber Security Specialist': {'Cyber Security': 7, 'Networking': 6, 'Computer Forensics Fundamentals': 6, 'Programming Skills': 5, 'Distributed Computing Systems': 4},
+            'Database Administrator': {'Database Fundamentals': 7, 'Distributed Computing Systems': 6, 'Troubleshooting skills': 5, 'Computer Architecture': 4},
+            'Graphics Designer': {'Graphics Designing': 7, 'Communication skills': 5, 'Technical Communication': 4, 'Project Management': 3},
+            'Hardware Engineer': {'Computer Architecture': 7, 'Troubleshooting skills': 6, 'Networking': 5, 'Distributed Computing Systems': 4},
+            'Helpdesk Engineer': {'Troubleshooting skills': 7, 'Communication skills': 6, 'Networking': 5, 'Computer Architecture': 4, 'Database Fundamentals': 4},
+            'Information Security Specialist': {'Cyber Security': 7, 'Computer Forensics Fundamentals': 6, 'Networking': 6, 'Troubleshooting skills': 5, 'Database Fundamentals': 4},
+            'Networking Engineer': {'Networking': 7, 'Troubleshooting skills': 6, 'Cyber Security': 5, 'Distributed Computing Systems': 4, 'Computer Architecture': 4},
+            'Project Manager': {'Project Management': 7, 'Communication skills': 6, 'Business Analysis': 5, 'Software Engineering': 5, 'Technical Communication': 5, 'Software Development': 4},
+            'Software Developer': {'Programming Skills': 7, 'Software Development': 7, 'Software Engineering': 6, 'Database Fundamentals': 5, 'Distributed Computing Systems': 4},
+            'Software tester': {'Software Engineering': 6, 'Software Development': 5, 'Troubleshooting skills': 6, 'Programming Skills': 5, 'Database Fundamentals': 4},
+            'Technical Writer': {'Technical Communication': 7, 'Communication skills': 6, 'Software Engineering': 4, 'Software Development': 4, 'Project Management': 4}
+        }
+
+        def get_skill_assessment(role_name):
+            skills_assessed = []
+            has_gaps = False
+            if role_name in role_skill_requirements:
+                required_skills = role_skill_requirements[role_name]
+                for skill, target_score in required_skills.items():
+                    user_score = features.get(skill, 0)
+                    gap_val = max(0, target_score - user_score)
+                    is_gap = gap_val > 0
+                    if is_gap:
+                        has_gaps = True
+                    skills_assessed.append({
+                        'skill': skill,
+                        'current': user_score,
+                        'target': target_score,
+                        'gap': gap_val,
+                        'is_gap': is_gap
+                    })
+            # Sort: gaps first, then by target score descending
+            skills_assessed.sort(key=lambda x: (not x['is_gap'], -x['target']))
+            return {'skills': skills_assessed, 'has_gaps': has_gaps}
+
+        all_skill_gaps = [
+            {'role': l[0][0], **get_skill_assessment(l[0][0])},
+            {'role': l[1][0], **get_skill_assessment(l[1][0])},
+            {'role': l[2][0], **get_skill_assessment(l[2][0])}
+        ]
+        # --------------------------------
+
         # pages={'AI ML Specialist':'https://resources.workable.com/machine-learning-engineer-job-description#:~:text=Designing%20and%20developing%20machine%20learning,Implementing%20appropriate%20ML%20algorithms'}
         # yy=pages[l[0][0]]
-        return render(request,'result.html',{'result':pred,'x':l[0][0],'y':l[1][0],'z':l[2][0]})
+        return render(request,'result.html',{'result':pred,'x':l[0][0],'y':l[1][0],'z':l[2][0], 'all_skill_gaps': all_skill_gaps})
         #return render(request,'result.html',{'result':pred,'x':l[0][0],'y':l[1][0],'z':l[2][0],'po':yy})
      else:
          return render(request,'index.html')

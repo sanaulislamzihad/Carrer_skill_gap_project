@@ -60,10 +60,66 @@
                         <h3 class="text-2xl font-bold text-slate-200">{{z}}</h3>
                     </div>
                 </div>
+
+                <!-- Skill Gap Analysis -->
+                {% if all_skill_gaps %}
+                <div class="mt-10 bg-slate-800/50 border border-slate-700 rounded-2xl p-6 sm:p-8">
+                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                        Skill Gap Analysis for Top Careers
+                    </h3>
+                    
+                    <div class="space-y-10">
+                        {% for career in all_skill_gaps %}
+                        <div>
+                            <h4 class="text-lg font-semibold text-slate-200 mb-3 border-b border-slate-600 pb-2">
+                                Role: <span class="text-blue-400">{{ career.role }}</span>
+                            </h4>
+                            
+                            {% if career.skills %}
+                                {% if not career.has_gaps %}
+                                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-3 text-sm flex items-center mb-4">
+                                        <svg class="w-5 h-5 mr-2 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                        <span class="text-emerald-200/90">Excellent Match! You meet or exceed all typical requirements for this role.</span>
+                                    </div>
+                                {% endif %}
+                                <div class="space-y-4">
+                                    {% for item in career.skills %}
+                                    <div>
+                                        <div class="flex justify-between text-sm font-medium mb-1">
+                                            <span class="text-slate-300">{{ item.skill }}</span>
+                                            {% if item.is_gap %}
+                                                <span class="text-rose-400">Current: {{ item.current }} / Target: {{ item.target }}</span>
+                                            {% else %}
+                                                <span class="text-emerald-400">Met ({{ item.current }}/{{ item.target }})</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="w-full bg-slate-700 rounded-full h-2.5 overflow-hidden flex shadow-inner">
+                                            {% if item.is_gap %}
+                                                <div class="bg-gradient-to-r from-blue-500 to-cyan-400 h-full" style="width: calc({{ item.current }} / 7 * 100%)"></div>
+                                                <div class="bg-rose-500/80 h-full" style="width: calc({{ item.gap }} / 7 * 100%)"></div>
+                                            {% else %}
+                                                <div class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full" style="width: calc({{ item.current }} / 7 * 100%)"></div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-3 text-sm flex items-center">
+                                    <svg class="w-5 h-5 mr-2 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span class="text-emerald-200/90">Excellent Match! Your current skills meet or exceed the typical requirements for this role.</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
             </div>
 
             <div class="mt-12 text-center relative z-10">
-                <a href="/" class="inline-flex items-center justify-center bg-slate-700 hover:bg-slate-600 text-white font-medium py-3 px-8 rounded-full transition-colors border border-slate-600 hover:border-slate-500">
+                <a href="{% url 'finalapp:form' %}" class="inline-flex items-center justify-center bg-slate-700 hover:bg-slate-600 text-white font-medium py-3 px-8 rounded-full transition-colors border border-slate-600 hover:border-slate-500">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                     Take Questionnaire Again
                 </a>

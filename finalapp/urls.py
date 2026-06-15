@@ -8,6 +8,7 @@ urlpatterns = [
     # path('finalapp/', views.homepage1, name='finalapp'),
     # path('t/', views.tpage, name='t'),
     # path('fillform',views.index, name="index"),
-    path('',views.index),
+    path('',views.landing, name="landing"),
+    path('form/',views.index, name="form"),
     path('predict',views.predict,name="predict")
 ]

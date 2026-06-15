@@ -36,7 +36,7 @@
         <p class="text-lg text-slate-400 max-w-2xl mx-auto">Discover your ideal career path based on your technical expertise and personality traits. Fill out the questionnaire below to get started.</p>
     </div>
 
-    <form action="predict" method="post" class="glass-panel rounded-2xl p-8 sm:p-12 mb-10">
+    <form action="{% url 'finalapp:predict' %}" method="post" class="glass-panel rounded-2xl p-8 sm:p-12 mb-10">
         {% csrf_token %}
         
         <!-- Part 1: Technical Skills -->
